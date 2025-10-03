@@ -11,6 +11,12 @@
 *.gch
 *.pch
 
+# Linker files
+*.ilk
+
+# Debugger Files
+*.pdb
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -30,3 +36,28 @@
 *.exe
 *.out
 *.app
+
+# debug information files
+*.dwo
+# 忽略 CMake 生成的构建目录
+build/
+
+# 忽略 vcpkg 安装的库
+vcpkg/
+# 忽略手动管理的依赖目录
+libs/
+
+# 忽略 Visual Studio 配置
+.vscode/
+.vs/
+*.suo
+*.sln
+
+# 忽略 CLion 配置
+.idea/
+
+# macOS 系统文件
+.DS_Store
+
+# Windows 缩略图缓存
+Thumbs.db
