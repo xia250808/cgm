@@ -1,0 +1,77 @@
+#pragma once
+#include <array>
+
+
+
+namespace cgm::math {
+	template <typename T, size_t N>
+	class Vec {
+		static_assert(N > 0, "Vector dimension must be greater than 0");
+		std::array<T, N> data_;
+	public:
+		Vec() : data_{ T{} } {};
+		Vec(std::array<T, N> arr) :data_(arr) {};
+		void print()const {
+			std::cout << "Vector: ";
+			for (size_t i = 0; i < N; ++i) {
+				std::cout << data_[i] << "\t";
+			}
+			std::cout << std::endl;
+		};
+		bool operator==(const Vec<T, N>& other) const noexcept{
+			
+
+			if constexpr(std::is_floating_point_v<T>)
+			{
+				constexpr T epsilon = std::numeric_limits<T>::epsilon() * N;
+				for (size_t i = 0; i < N; ++i)
+				{
+					if (std::abs(data_[i]-other.data_[i]) >epsilon) return false;
+				}
+			}else
+			{
+				for (size_t i = 0; i < N; ++i)
+				{
+					if (data_[i] != other.data_[i]) return false;
+				}
+			}
+			return true;
+			
+		}
+		T& operator[](size_t i) {
+			if (i > N) throw std::out_of_range("Vec index out of range");
+			return data_[i];
+		}
+		const T& operator[](size_t i) const {
+			if (i > N) throw std::out_of_range("Vec index out of range");
+				return data_[i];
+		}
+
+		Vec<T, N> operator+(const Vec<T,N>& other)const {
+			Vec<T, N> retVec;
+			for (size_t i = 0; i < N; ++i)
+			{
+				retVec[i] = data_[i] + other.data_[i];
+			}
+			return retVec;
+		}
+		
+		template<typename Scalar>
+		Vec& operator*(Scalar k)const {
+			return k * *this;
+		}
+
+	};
+
+	template<typename Scalar,typename T,size_t N>
+	Vec<T, N> operator*(Scalar k, const Vec<T, N>& vec) {
+		Vec<T,N> retVec = vec;
+		for (size_t i = 0; i < N; ++i)
+		{
+			retVec[i] *= k;
+		}
+
+		return retVec;
+	}
+
+}
