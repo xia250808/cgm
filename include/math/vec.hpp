@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <iostream>
-
+#include "math/mat.hpp"
 
 
 namespace cgm::math {
@@ -60,6 +60,18 @@ namespace cgm::math {
 		template<typename Scalar>
 		Vec& operator*(Scalar k)const {
 			return k * *this;
+		}
+
+		Vec operator*(const cgm::math::Mat<T, N> mat)const {
+			Vec retVec;
+			for (size_t i = 0; i < N; i++)
+			{
+				for (size_t j = 0; j < N; j++)
+				{
+					retVec[i] += data_[j] * mat(i, j);
+				}
+			}
+			return retVec;
 		}
 
 	};

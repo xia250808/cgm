@@ -11,7 +11,7 @@ endif()
 
 project("cgm_tests" LANGUAGES CXX)
 # 将源代码添加到此项目的可执行文件。
-add_executable (tests "tests.cpp" "tests.h")
+add_executable (tests "tests.cpp" "tests.h" "math_test/mat_test.h")
 target_link_libraries(tests  PRIVATE 
     cgm
 )
