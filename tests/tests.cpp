@@ -2,16 +2,13 @@
 //
 
 #include "tests.h"
-#include "math/vec.hpp"
+#include "math_test/vec_test.h"
 
 using namespace std;
-using namespace cgm::math;
 int main()
 {
-	cout << "Hello CMake." << endl;
-	Vec<float, 4>  vecA;
-	std::array<float, 4> arr1 = { 1,2,3,4 };
-	Vec<float, 4> VecB = Vec(arr1);
-	(VecB +  2*VecB).print();
+	cout << "TEST START" << endl;
+	vec_test::vecMultTest();
+	cout << "TEST END" << endl;
 	return 0;
 }
