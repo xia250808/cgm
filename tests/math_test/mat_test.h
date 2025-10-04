@@ -20,7 +20,7 @@ public:
 		Mat<float, 4> mat4 = Mat<float, 4>(myStdArr);
 		if (mat4.transpose().transpose() == mat4)
 		{
-			std::cout << "transpose func  work!" << std::endl;
+			std::cout << "transpose method  work!" << std::endl;
 		};
 	}
 
@@ -37,4 +37,44 @@ public:
 			std::cout << "mult and reload operator ==  work!" << std::endl;
 		}
 	}
+
+	static void createMinor_test() {
+		std::array<std::array<float, 4>, 4> myArr = { {
+			{ 1.0f,5.0f,4.0f,2.0f },
+			{ 7.0f,4.0f,7.1f,2.0f },
+			{ 3.0f,5.0f,-1.0f,2.0f },
+			{ 8.0f,6.0f,5.0f,9.0f }
+		} };
+		Mat<float, 4> mat4 = Mat<float, 4>(myArr);
+		mat4.createMinor(0, 1).print();
+	}
+
+	static void determinant_test() {
+		std::array<std::array<float, 4>, 4> myArr = { {
+			{ 1.0f,5.0f,4.0f,2.0f },
+			{ 7.0f,4.0f,7.1f,2.0f },
+			{ 3.0f,5.0f,-1.0f,2.0f },
+			{ 8.0f,6.0f,5.0f,9.0f }
+		} };
+		Mat<float, 4> mat4 = Mat<float, 4>(myArr);
+		float det = mat4.determinant();
+		std::cout << det << std::endl;
+	}
+
+	static void inverse_test() {
+		std::array<std::array<float, 4>, 4> myArr = { {
+			{ 1.0f,5.0f,4.0f,2.0f },
+			{ 7.0f,4.0f,7.1f,2.0f },
+			{ 3.0f,5.0f,-1.0f,2.0f },
+			{ 8.0f,6.0f,5.0f,9.0f }
+		} };
+		std::array<float, 4> arr1 = { 1,2,3,4 };
+		Vec<float, 4> VecA = Vec(arr1);
+		Mat<float, 4> mat4 = Mat<float, 4>(myArr);
+		if (VecA*mat4*mat4.inverse() == VecA)
+		{
+			std::cout << "inverse method work!"<<std::endl;
+		}
+	}
+	
 };
