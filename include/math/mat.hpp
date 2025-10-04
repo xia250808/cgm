@@ -4,6 +4,49 @@ namespace cgm::math {
 	template<typename T,size_t N>
 	class Mat {
 		static_assert(N > 0, "Matrix order must be at least 1");
+
+	private:
+
+		Mat<T, N - 1> createMinor(size_t excludeRow, size_t excludeCol) const{
+			if (excludeRow >= N || excludeCol >= N) {
+				throw std::out_of_range("Matrix indices out of range");
+			}
+			Mat<T, N - 1> retMat;
+			size_t retMatRowIndex = 0;
+			for (size_t i = 0; i < N; i++)
+			{
+				if (i == excludeRow) continue;
+				size_t retMatColIndex = 0;
+				for (size_t j = 0; j < N; j++)
+				{
+					if (j == excludeCol) continue;
+					retMat(retMatRowIndex, retMatColIndex) = data_[i][j];
+					retMatColIndex++;
+				}
+				retMatRowIndex++;
+			}
+
+			return retMat;
+		}
+
+		T cofactor(size_t i, size_t j) const {
+			static_assert(N >= 1, "Cofactor requires matrix order >= 1");
+			int sig = (i + j) % 2 == 0 ? 1 : -1;
+			Mat<T, N - 1> minor = createMinor(i, j);
+			return sig * (minor.determinant());
+		}
+		Mat adj() const {
+			Mat retMat;
+			for (size_t i = 0; i < N; i++)
+			{
+				for (size_t j = 0; j < N; j++) {
+					retMat(j, i) = cofactor(i, j);
+				}
+			}
+			return retMat;
+
+		}
+
 	public:
 		using Row = std::array<T, N>;
 		using Data = std::array<Row, N>;
@@ -139,35 +182,6 @@ namespace cgm::math {
 		};
 
 
-		Mat<T, N - 1> createMinor(size_t excludeRow,size_t excludeCol) {
-			if (excludeRow >= N || excludeCol >= N) {
-				throw std::out_of_range("Matrix indices out of range");
-			}
-			Mat<T, N - 1> retMat;
-			size_t retMatRowIndex = 0;
-			for (size_t i = 0; i < N; i++)
-			{
-				if (i == excludeRow) continue;
-				size_t retMatColIndex = 0;
-				for (size_t j = 0; j < N; j++)
-				{
-					if (j == excludeCol) continue;
-					retMat(retMatRowIndex, retMatColIndex) = data_[i][j];
-					retMatColIndex++;
-				}
-				retMatRowIndex++;
-			}
-
-			return retMat;
-		}
-
-		T cofactor(size_t i, size_t j) {
-			static_assert(N >= 1, "Cofactor requires matrix order >= 1");
-			int sig = (i + j) % 2 == 0 ? 1 : -1;
-			Mat<T, N - 1> minor = createMinor(i, j);
-			return sig * (minor.determinant());
-		}
-
 		T determinant() {
 			if constexpr (N == 0) {
 				return T(1); // 空矩阵行列式为 1
@@ -180,26 +194,15 @@ namespace cgm::math {
 			}
 			else {
 				T det = T(0);
-				size_t i = 0;
 				for (size_t j = 0; j < N; j++)
 				{
-					det += data_[i][j] * cofactor(i, j);
+					det += data_[0][j] * cofactor(0, j);
 				}
 				return det;
 			}
 		}
 
-		Mat adj() {
-			Mat retMat;
-			for (size_t i = 0; i < N; i++)
-			{
-				for (size_t j = 0; j < N; j++) {
-					retMat(j, i) = cofactor(i, j);
-				}
-			}
-			return retMat;
-
-		}
+		
 
 		Mat inverse() {
 			return (T(1) / determinant()) * adj();

@@ -14,7 +14,6 @@ int main()
 	//mat_test::print_func_test();
 	mat_test::transpose_test();
 	mat_test::mult_equal_test();
-	mat_test::createMinor_test();
 	mat_test::determinant_test();
 	mat_test::inverse_test();
 	cout << "TEST END" << endl;
