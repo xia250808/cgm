@@ -1,3 +1,7 @@
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/glm.hpp>
+#include <glm/gtx/euler_angles.hpp>
 #include "math/​math.hpp"
 
 using cgm::math::Mat;
@@ -66,12 +70,21 @@ public:
 			std::cout << "inverse method work!"<<std::endl;
 		}
 	}
+	static void mat3_eul_test() {
+		Eul<float> eulA = Eul(glm::radians(65.0f), glm::radians(24.0f), glm::radians(42.0f));
+		Mat<float, 3> Mat3A = eulA.transToMat3();
+		Eul<float> eulA1 = Mat3A.transToEulYxz();
+		std::string result = (eulA == eulA1) ? "transToEulYxz work!" : "transToEulYxz not work!";
+		cout << result << endl;
+
+	}
 
 	mat_test() {
 		/*print_func_test();
 		transpose_test();
 		mult_equal_test();
 		determinant_test();*/
+		mat3_eul_test();
 		inverse_test();
 	}
 	

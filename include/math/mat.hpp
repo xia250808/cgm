@@ -1,6 +1,11 @@
 #pragma once
+#include <numbers> 
 
 namespace cgm::math {
+
+	template<typename T>
+	class Eul;
+
 	template<typename T,size_t N>
 	class Mat {
 		static_assert(N > 0, "Matrix order must be at least 1");
@@ -204,6 +209,39 @@ namespace cgm::math {
 
 		Mat inverse() {
 			return (T(1) / determinant()) * adj();
+		}
+
+		Eul<T> transToEulYxz()const {
+			T p;
+			T y;
+			T r;
+			constexpr T pi = std::numbers::template pi_v<T>;
+
+			T sp = -data_[2][1];
+			
+			if (sp <= -1.0f) {
+
+				p = -pi / 2;
+			}
+			else if (sp >= 1.0f) {
+
+				p = pi / 2;
+
+			}
+			else {
+
+				p = asin(sp);
+			}
+			if (fabs(sp) > 0.9999f)
+			{
+				r = 0.0f;
+				y = atan2(data_[0][2], data_[0][0]);
+			}
+			else {
+				y = atan2(data_[2][0], data_[2][2]);
+				r = atan2(data_[0][1], data_[1][1]);
+			}
+			return Eul<T>(y, p, r);
 		}
 	};
 }
