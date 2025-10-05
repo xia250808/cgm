@@ -8,4 +8,5 @@
 #include "math_test/mat_test.h"
 #include "math_test/quat_test.h"
 #include "math_test/eul_test.h"
+#include "trans_test/transform_test.h"
 

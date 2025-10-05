@@ -48,6 +48,21 @@ namespace cgm::math {
 				return data_[i];
 		}
 
+		T length() const {
+			T sum = 0;
+			for (size_t i = 0; i < N; i++)
+			{
+				sum += data_[i] * data_[i];
+			}
+			return sqrt(sum);
+		}
+		Vec<T, N> normalized() const {
+			T len = length();
+			return len == 0 ? *this : (T(1)/len) * *this;
+		}
+
+
+
 		Vec<T, N> operator+(const Vec<T,N>& other)const {
 			Vec<T, N> retVec;
 			for (size_t i = 0; i < N; ++i)
