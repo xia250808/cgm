@@ -202,8 +202,6 @@ namespace cgm::math {
 			}
 		}
 
-		
-
 		Mat inverse() {
 			return (T(1) / determinant()) * adj();
 		}

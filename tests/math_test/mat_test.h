@@ -66,5 +66,13 @@ public:
 			std::cout << "inverse method work!"<<std::endl;
 		}
 	}
+
+	mat_test() {
+		/*print_func_test();
+		transpose_test();
+		mult_equal_test();
+		determinant_test();*/
+		inverse_test();
+	}
 	
 };

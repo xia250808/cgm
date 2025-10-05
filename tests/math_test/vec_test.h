@@ -17,4 +17,8 @@ class vec_test {
             Mat<float, 4> matA = Mat<float, 4>::identity();
             (vecA * matA).print();
         }
+        vec_test() {
+            vecMultTest();
+            vecMultMatTest();
+        }
 };

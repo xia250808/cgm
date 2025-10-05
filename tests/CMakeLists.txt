@@ -11,9 +11,12 @@ endif()
 
 project("cgm_tests" LANGUAGES CXX)
 # 将源代码添加到此项目的可执行文件。
-add_executable (tests "tests.cpp" "tests.h" "math_test/mat_test.h")
+add_executable (tests "tests.cpp" "tests.h" "math_test/mat_test.h" "math_test/quat_test.h" "math_test/eul_test.h" "utill/utill.h")
 target_link_libraries(tests  PRIVATE 
     cgm
+)
+target_include_directories(tests PRIVATE 
+    "${CMAKE_SOURCE_DIR}/tests/external"
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
