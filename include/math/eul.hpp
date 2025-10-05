@@ -45,13 +45,13 @@ namespace cgm::math {
 		RotationOrder ro_ = RotationOrder::YXZ;
 
 		Eul(T theta1 = T(0), T theta2 = T(0), T theta3 = T(0), RotationOrder order = RotationOrder::YXZ) : t1_(theta1), t2_(theta2), t3_(theta3),ro_(order) {};
-		// XYZ, YZX, ZXY, XZY, YXZ, ZYX 
+		
 		bool operator==(const Eul& other)const {
 			constexpr T epsilon = std::numeric_limits<T>::epsilon() * 3;
 			if (ro_!= other.ro_)return false;
-			if (std::abs(t1_ - other.t1_) > epsilon || std::abs(t2_ - other.t2_) > epsilon || std::abs(t3_ - other.t3_) > epsilon) {
-				return false;
-			}
+			if (std::abs(t1_ - other.t1_) > epsilon)return false;
+			if (std::abs(t2_ - other.t2_) > epsilon)return false;
+			if (std::abs(t3_ - other.t3_) > epsilon)return false;
 			return true;
 		}
 
@@ -69,7 +69,8 @@ namespace cgm::math {
 				return rz(t3_) * rx(t2_) * ry(t1_);
 			case RotationOrder::ZYX:
 				return rx(t3_) * ry(t2_) * rz(t1_);
-
+			default:
+				return rz(t3_) * rx(t2_) * ry(t1_);
 			};
 
 		};
@@ -118,8 +119,6 @@ namespace cgm::math {
 			};
 			std::cout << std::endl;
 
-		};
-
-		
+		};	
 	};
 }
