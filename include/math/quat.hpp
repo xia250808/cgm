@@ -6,8 +6,12 @@ namespace cgm::math {
 	class Mat;
 
 	template<typename T>
+	class Eul;
+
+	template<typename T>
 	class Quat{
 	private:
+		T epsilon_ = std::numeric_limits<T>::epsilon() * 4;
 		// 模长平方
 		T normSquared() const {
 			return w_ * w_ + x_ * x_ + y_ * y_ + z_ * z_;
@@ -46,9 +50,49 @@ namespace cgm::math {
 			return abs(T(1) - norm()) < epsilon;
 		}
 
-		Mat<T, 3> transToMat3() const;
+		Mat<T, 3> transToMat3() const {
+			Mat<T, 3> retMat3;
+			retMat3(0, 0) = 1 - 2 * y_ * y_ - 2 * z_ * z_;
+			retMat3(0, 1) = 2 * x_ * y_ + 2 * w_ * z_;
+			retMat3(0, 2) = 2 * x_ * z_ - 2 * w_ * y_;
 
+			retMat3(1, 0) = 2 * x_ * y_ - 2 * w_ * z_;
+			retMat3(1, 1) = 1 - 2 * x_ * x_ - 2 * z_ * z_;
+			retMat3(1, 2) = 2 * y_ * z_ + 2 * w_ * x_;
 
+			retMat3(2, 0) = 2 * x_ * z_ + 2 * w_ * y_;
+			retMat3(2, 1) = 2 * y_ * z_ - 2 * w_ * x_;
+			retMat3(2, 2) = 1 - 2 * x_ * x_ - 2 * y_ * y_;
+
+			return retMat3;
+		};
+
+		bool operator==(const Quat& other)const {
+			if (abs(w_ - other.w_) > epsilon_)return false;
+			if (abs(x_ - other.x_) > epsilon_)return false;
+			if (abs(y_ - other.y_) > epsilon_)return false;
+			if (abs(z_ - other.z_) > epsilon_)return false;
+			return true;
+		}
+
+		Eul<T> transToEulYxz()const {
+			T yaw, pitch, roll;
+			T sp = -2 * (y_ * z_ - w_ * x_);
+			constexpr T pi = std::numbers::template pi_v<T>;
+			if (sp > 0.9999f)
+			{
+				pitch = pi / 2;
+				roll = T(0);
+				yaw = atan2(w_ * y_ - x_ * z_, 0.5f - y_ * y_ - z_ * z_);
+			}
+			else
+			{
+				pitch = asin(sp);
+				roll = atan2(x_ * y_ + w_ * z_, 0.5f - x_ * x_ - z_ * z_);
+				yaw = atan2(x_ * z_ + w_ * y_, 0.5f - x_ * x_ - y_ * y_);
+			}
+			return Eul(yaw, pitch, roll);
+		}
 		
 	};
 }

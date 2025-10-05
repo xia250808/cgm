@@ -3,17 +3,16 @@
 
 namespace cgm::math {
 
+	
 	template<typename T, size_t N>
 	class Mat;
-
-
+	template<typename T>
+	class Quat;
 	enum class RotationOrder { XYZ, YZX, ZXY, XZY, YXZ, ZYX };
-	
-
 	template<typename T>
 	class Eul {
 	private:
-		T epsilon_; // 角度归一化的误差容限（类型与T一致）
+		T epsilon_ = std::numeric_limits<T>::epsilon() * 3; // 角度归一化的误差容限（类型与T一致）
 		Mat<T, 3> rx(T theta) const{
 			return Mat<T, 3>({ {
 				{1, 0, 0},
@@ -43,15 +42,13 @@ namespace cgm::math {
 		T  t2_;
 		T  t3_;
 		RotationOrder ro_ = RotationOrder::YXZ;
-
-		Eul(T theta1 = T(0), T theta2 = T(0), T theta3 = T(0), RotationOrder order = RotationOrder::YXZ) : t1_(theta1), t2_(theta2), t3_(theta3),ro_(order) {};
-		
+		Eul(std::array<T, 3> arr) : t1_(arr[0]), t2_(arr[1]), t3_(arr[2]) {};
+		Eul(T theta1 = T(0), T theta2 = T(0), T theta3 = T(0), RotationOrder order_ = RotationOrder::YXZ) : t1_(theta1), t2_(theta2), t3_(theta3),ro_(order_) {};
 		bool operator==(const Eul& other)const {
-			constexpr T epsilon = std::numeric_limits<T>::epsilon() * 3;
 			if (ro_!= other.ro_)return false;
-			if (std::abs(t1_ - other.t1_) > epsilon)return false;
-			if (std::abs(t2_ - other.t2_) > epsilon)return false;
-			if (std::abs(t3_ - other.t3_) > epsilon)return false;
+			if (std::abs(t1_ - other.t1_) > epsilon_)return false;
+			if (std::abs(t2_ - other.t2_) > epsilon_)return false;
+			if (std::abs(t3_ - other.t3_) > epsilon_)return false;
 			return true;
 		}
 
@@ -74,6 +71,24 @@ namespace cgm::math {
 			};
 
 		};
+
+		Quat<T> transToQuat()const{
+
+			T y = normalize_angle(t1_);
+			T p = normalize_angle(t2_);
+			T r = normalize_angle(t3_);
+			T cy2 = cos(y / 2), sy2 = sin(y / 2);
+			T cp2 = cos(p / 2), sp2 = sin(p / 2);
+			T cr2 = cos(r / 2), sr2 = sin(r / 2);
+			Quat<T> retQuat;
+			retQuat.w_ = cy2 * cp2 * cr2 + sy2 * sp2 * sr2;
+			retQuat.x_ = cy2 * sp2 * cr2 + sy2 * cp2 * sr2;
+			retQuat.y_ = sy2 * cp2 * cr2 - cy2 * sp2 * sr2;
+			retQuat.z_ = cy2 * cp2 * sr2 - sy2 * sp2 * cr2;
+
+			return retQuat;
+		}
+
 		T normalize_angle(T angle) const {
 			using std::fmod;       // 允许ADL查找fmod（支持自定义类型）
 			constexpr T pi = std::numbers::template pi_v<T>;
@@ -119,6 +134,7 @@ namespace cgm::math {
 			};
 			std::cout << std::endl;
 
-		};	
+		};
+	
 	};
 }

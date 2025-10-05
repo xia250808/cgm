@@ -6,6 +6,9 @@ namespace cgm::math {
 	template<typename T>
 	class Eul;
 
+	template<typename T>
+	class Quat;
+
 	template<typename T,size_t N>
 	class Mat {
 		static_assert(N > 0, "Matrix order must be at least 1");
@@ -212,6 +215,7 @@ namespace cgm::math {
 		}
 
 		Eul<T> transToEulYxz()const {
+			static_assert(N >= 3, "Matrix must be at least 3x3 to extract Euler angles");
 			T p;
 			T y;
 			T r;
@@ -243,5 +247,67 @@ namespace cgm::math {
 			}
 			return Eul<T>(y, p, r);
 		}
+
+		Quat<T> transToQuat()const {
+			static_assert(N >= 3, "Matrix must be at least 3x3 to extract Euler angles");
+			T w, x, y, z;
+			T _w, _x, _y, _z;
+			_w = data_[0][0] + data_[1][1] + data_[2][2];
+			_x = data_[0][0] - data_[1][1] - data_[2][2];
+			_y = -data_[0][0] + data_[1][1] - data_[2][2];
+			_z = -data_[0][0] - data_[1][1] + data_[2][2];
+
+			T  maxNum = _w;
+			size_t maxNumIndex = 0;
+			if (_x > maxNum)
+			{
+				maxNum = _x;
+				maxNumIndex = 1;
+			}
+			if (_y > maxNum)
+			{
+				maxNum = _y;
+				maxNumIndex = 2;
+			}
+			if (_z > maxNum)
+			{
+				maxNum = _z;
+				maxNumIndex = 3;
+			}
+
+			T biggestVal = sqrt(maxNum + 1) * 0.5f;
+			T mult = 0.25f / biggestVal;
+
+			switch (maxNumIndex) {
+			case 0:
+				w = biggestVal;
+				x = (data_[1][2] - data_[2][1]) * mult;
+				y = (data_[2][0] - data_[0][2]) * mult;
+				z = (data_[0][1] - data_[1][0]) * mult;
+				break;
+			case 1:
+				x = biggestVal;
+				w = (data_[1][2] - data_[2][1]) * mult;
+				y = (data_[0][1] - data_[1][0]) * mult;
+				z = (data_[2][0] - data_[0][2]) * mult;
+				break;
+			case 2:
+				y = biggestVal;
+				w = (data_[2][0] - data_[0][2]) * mult;
+				x = (data_[0][1] - data_[1][0]) * mult;
+				z = (data_[1][2] - data_[2][1]) * mult;
+				break;
+			case 3:
+				z = biggestVal;
+				w = (data_[0][1] - data_[1][0]) * mult;
+				x = (data_[2][0] - data_[0][2]) * mult;
+				y = (data_[1][2] - data_[2][1]) * mult;
+				break;
+			}
+			std::array<T, 4> arr1 = { w,x,y,z };
+			return Quat<T>(arr1);
+		}
+
+		
 	};
 }

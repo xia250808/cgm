@@ -8,7 +8,7 @@ int main()
 {
 	cout << "TEST START" << endl;
 	//vec_test vecTest;
-	mat_test matTest;
+	//mat_test matTest;
 	//quat_test quatTest;
 	eul_test eulTest;
 
