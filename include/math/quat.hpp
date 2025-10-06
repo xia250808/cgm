@@ -67,7 +67,7 @@ namespace cgm::math {
 			return retMat3;
 		};
 
-		bool operator==(const Quat& other)const {
+		bool operator==(const Quat& other) const {
 			if (abs(w_ - other.w_) > epsilon_)return false;
 			if (abs(x_ - other.x_) > epsilon_)return false;
 			if (abs(y_ - other.y_) > epsilon_)return false;

@@ -80,10 +80,10 @@ public:
 	}
 
 	mat_test() {
-		/*print_func_test();
+		print_func_test();
 		transpose_test();
 		mult_equal_test();
-		determinant_test();*/
+		determinant_test();
 		mat3_eul_test();
 		inverse_test();
 	}

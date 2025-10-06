@@ -9,10 +9,10 @@ class eul_test
 {
 public:
 	eul_test() {
-		/*eul_print_test();
+		eul_print_test();
 		eul_mat3_test();
 		eul_quat_test();
-		mat_quat_test();*/
+		mat_quat_test();
 		quat_eul_test();
 	}
 

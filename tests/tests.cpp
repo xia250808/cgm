@@ -8,9 +8,9 @@ int main()
 {
 	cout << "TEST START" << endl;
 	vec_test vecTest;
-	//mat_test matTest;
+	mat_test matTest;
 	//quat_test quatTest;
-	//eul_test eulTest;
+	eul_test eulTest;
 	//transform_test trans_test;
 
 	cout << "TEST END" << endl;
