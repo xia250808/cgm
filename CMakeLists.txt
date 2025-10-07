@@ -11,9 +11,8 @@ endif()
 
 project ("cgm")
 
-# 1. 递归收集所有 .cpp .hpp文件（包括子目录）
+# 1. 递归收集所有 .cpp 文件（包括子目录）
 file(GLOB_RECURSE CGM_IMPL_SOURCES
-  "${CMAKE_SOURCE_DIR}/src/**/*.hpp"  # 模板成员函数的实现（如vector_impl.hpp）
   "${CMAKE_SOURCE_DIR}/src/**/*.cpp"  # 若有非模板辅助函数，可保留
 )
 
