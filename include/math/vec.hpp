@@ -1,10 +1,14 @@
 #pragma once
 #include <array>
 #include <iostream>
-#include "math/mat.hpp"
+
 
 
 namespace cgm::math {
+
+	template<typename T, size_t N>
+	class Mat;
+
 	template <typename T, size_t N>
 	class Vec {
 		static_assert(N > 0, "Vector dimension must be greater than 0");
