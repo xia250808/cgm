@@ -15,6 +15,7 @@ public:
 		Quat<float> quatB = Quat<float>(arr1);
 		quatB.print();
 		quatA.print();
+		quatA.print();
 
 	}
 
