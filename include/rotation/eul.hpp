@@ -1,14 +1,8 @@
 #pragma once
+#include "math/​math.hpp"
 #include <numbers> 
 
-namespace cgm::math {
-
-	
-	template<typename T, size_t N>
-	class Mat;
-
-	template<typename T>
-	class Quat;
+namespace cgm::rotation {
 
 	enum class RotationOrder { XYZ, YZX, ZXY, XZY, YXZ, ZYX };
 
@@ -32,6 +26,10 @@ namespace cgm::math {
 		Eul(std::array<T, 3> arr) : t1_(arr[0]), t2_(arr[1]), t3_(arr[2]) {};
 
 		Eul(T theta1 = T(0), T theta2 = T(0), T theta3 = T(0), RotationOrder order_ = RotationOrder::YXZ) : t1_(theta1), t2_(theta2), t3_(theta3),ro_(order_) {};
+
+		static Eul<T> createFromMat3(const Mat<T, 3>& mat3, RotationOrder order = RotationOrder::YXZ);
+
+		static Eul<T> createFromQuat(const Quat<T>& quat, RotationOrder order = RotationOrder::YXZ);
 
 		bool operator==(const Eul& other)const;
 
@@ -122,8 +120,44 @@ namespace cgm::math {
 	};
 
 	template<typename T>
-	Quat<T> Eul<T>::transToQuat()const {
+	Eul<T> Eul<T>::createFromMat3(const Mat<T, 3>& mat, RotationOrder order) {
+		// only support RotationOrder::YXZ
+		T p;
+		T y;
+		T r;
+		constexpr T pi = std::numbers::template pi_v<T>;
 
+		T sp = -mat(2, 1);
+
+		if (sp <= -1.0f) {
+
+			p = -pi / 2;
+		}
+		else if (sp >= 1.0f) {
+
+			p = pi / 2;
+
+		}
+		else {
+
+			p = asin(sp);
+		}
+		if (fabs(sp) > 0.9999f)
+		{
+			r = 0.0f;
+			y = atan2(mat(0,2), mat(0,0));
+		}
+		else {
+			y = atan2(mat(2,0), mat(2,2));
+			r = atan2(mat(0,1), mat(1,1));
+		}
+		return Eul<T>(y, p, r);
+	}
+
+
+	template<typename T>
+	Quat<T> Eul<T>::transToQuat()const {
+		// only support RotationOrder::YXZ
 		T y = normalize_angle(t1_);
 		T p = normalize_angle(t2_);
 		T r = normalize_angle(t3_);
@@ -139,6 +173,27 @@ namespace cgm::math {
 		retQuat.z_ = cy2 * cp2 * sr2 - sy2 * sp2 * cr2;
 
 		return retQuat;
+	}
+
+	template<typename T>
+	Eul<T> Eul<T>::createFromQuat(const Quat<T>& quat, RotationOrder order) {
+		// only support RotationOrder::YXZ
+		T yaw, pitch, roll;
+		T sp = -2 * (quat.y_ * quat.z_ - quat.w_ * quat.x_);
+		constexpr T pi = std::numbers::template pi_v<T>;
+		if (sp > 0.9999f)
+		{
+			pitch = pi / 2;
+			roll = T(0);
+			yaw = atan2(quat.w_ * quat.y_ - quat.x_ * quat.z_, 0.5f - quat.y_ * quat.y_ - quat.z_ * quat.z_);
+		}
+		else
+		{
+			pitch = asin(sp);
+			roll = atan2(quat.x_ * quat.y_ + quat.w_ * quat.z_, 0.5f - quat.x_ * quat.x_ - quat.z_ * quat.z_);
+			yaw = atan2(quat.x_ * quat.z_ + quat.w_ * quat.y_, 0.5f - quat.x_ * quat.x_ - quat.y_ * quat.y_);
+		}
+		return Eul(yaw, pitch, roll);
 	}
 
 	template<typename T>

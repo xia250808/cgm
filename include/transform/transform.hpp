@@ -1,6 +1,7 @@
 #pragma once
 #include "math/​math.hpp"
 namespace cgm::trans {
+
 	template<typename T>
 	class TransformFactory {
 	public:

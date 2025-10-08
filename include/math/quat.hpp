@@ -5,8 +5,6 @@ namespace cgm::math {
 	template<typename T, size_t N>
 	class Mat;
 
-	template<typename T>
-	class Eul;
 
 	template<typename T>
 	class Quat{
@@ -73,25 +71,6 @@ namespace cgm::math {
 			if (abs(y_ - other.y_) > epsilon_)return false;
 			if (abs(z_ - other.z_) > epsilon_)return false;
 			return true;
-		}
-
-		Eul<T> transToEulYxz()const {
-			T yaw, pitch, roll;
-			T sp = -2 * (y_ * z_ - w_ * x_);
-			constexpr T pi = std::numbers::template pi_v<T>;
-			if (sp > 0.9999f)
-			{
-				pitch = pi / 2;
-				roll = T(0);
-				yaw = atan2(w_ * y_ - x_ * z_, 0.5f - y_ * y_ - z_ * z_);
-			}
-			else
-			{
-				pitch = asin(sp);
-				roll = atan2(x_ * y_ + w_ * z_, 0.5f - x_ * x_ - z_ * z_);
-				yaw = atan2(x_ * z_ + w_ * y_, 0.5f - x_ * x_ - y_ * y_);
-			}
-			return Eul(yaw, pitch, roll);
 		}
 		
 	};

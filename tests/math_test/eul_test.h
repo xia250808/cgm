@@ -4,6 +4,10 @@
 #include <glm/gtx/euler_angles.hpp>
 #include "utill/utill.h"
 #include "math/​math.hpp"
+#include "rotation/eul.hpp"
+
+using namespace cgm::rotation;
+//using namespace cgm::math;
 
 class eul_test
 {
@@ -14,6 +18,7 @@ public:
 		eul_quat_test();
 		mat_quat_test();
 		quat_eul_test();
+		mat_eul_test();
 	}
 
 	static void eul_print_test() {
@@ -25,7 +30,7 @@ public:
 		Mat<float, 3> Mat3A = eulA.transToMat3();
 		glm::mat4 rotationMatrix = glm::eulerAngleYXZ(glm::radians(65.0f), glm::radians(24.0f), glm::radians(42.0f));
 		Mat<float,3> Mat3B = Utill::transGlmMat4ToMat3(rotationMatrix);
-		std::string result = (Mat3A == Mat3B) ? "transToMat3 work!" : "transToMat3 not work!";
+		std::string result = (Mat3A == Mat3B) ? "EulTransToMat3 work!" : "EulTransToMat3 not work!";
 		cout << result << endl;
 
 	}
@@ -35,7 +40,7 @@ public:
 		Quat<float> quatA = eulA.transToQuat();
 		Mat<float, 3> Mat3A = quatA.transToMat3();
 		Mat<float, 3> Mat3B = eulA.transToMat3();
-		std::string result = (Mat3A == Mat3B) ? "EultransToQuat work! \t QuattransToMat3 work!" : "EultransToQuat not work! \t QuattransToMat3 not work!";
+		std::string result = (Mat3A == Mat3B) ? "EulTransToQuat work!" : "EulTransQuat not work!";
 		cout << result << endl;
 	}
 
@@ -50,8 +55,18 @@ public:
 	static void quat_eul_test() {
 		Eul<float> eulA = Eul(glm::radians(65.0f), glm::radians(24.0f), glm::radians(42.0f));
 		Quat<float> quatA = eulA.transToQuat();
-		Eul<float> eulB = quatA.transToEulYxz();
+		Eul<float> eulB = Eul<float>::createFromQuat(quatA);
 		std::string result = (eulA == eulB) ? "QuatTransToEul work! " : "QuatTransToEul not work! ";
+		cout << result << endl;
+	}
+
+	static void mat_eul_test() {
+		Eul<float> eulA = Eul(glm::radians(65.0f), glm::radians(24.0f), glm::radians(42.0f));
+		Quat<float> quatA = eulA.transToQuat();
+		Mat<float, 3> Mat3A = eulA.transToMat3();
+		Eul<float> eulC = Eul<float>::createFromQuat(quatA);
+		Eul<float> eulD = Eul<float>::createFromMat3(Mat3A);
+		std::string result = (eulC == eulD) ? "createFromQuat work!  createFromMat3 work!" : "createFromQuat not work! createFromQuat not work! ";
 		cout << result << endl;
 	}
 

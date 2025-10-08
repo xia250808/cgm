@@ -4,9 +4,6 @@
 namespace cgm::math {
 
 	template<typename T>
-	class Eul;
-
-	template<typename T>
 	class Quat;
 
 	template<typename T,size_t N>
@@ -62,8 +59,6 @@ namespace cgm::math {
 		Mat inverse() {
 			return (T(1) / determinant()) * adj();
 		}
-
-		Eul<T> transToEulYxz()const;
 
 		Quat<T> transToQuat()const;
 
@@ -255,42 +250,6 @@ namespace cgm::math {
 			return det;
 		}
 	}
-
-	template<typename T, size_t N>
-	inline Eul<T> Mat<T, N>::transToEulYxz()const {
-		static_assert(N >= 3, "Matrix must be at least 3x3 to extract Euler angles");
-		T p;
-		T y;
-		T r;
-		constexpr T pi = std::numbers::template pi_v<T>;
-
-		T sp = -data_[2][1];
-
-		if (sp <= -1.0f) {
-
-			p = -pi / 2;
-		}
-		else if (sp >= 1.0f) {
-
-			p = pi / 2;
-
-		}
-		else {
-
-			p = asin(sp);
-		}
-		if (fabs(sp) > 0.9999f)
-		{
-			r = 0.0f;
-			y = atan2(data_[0][2], data_[0][0]);
-		}
-		else {
-			y = atan2(data_[2][0], data_[2][2]);
-			r = atan2(data_[0][1], data_[1][1]);
-		}
-		return Eul<T>(y, p, r);
-	}
-
 
 	template<typename T, size_t N>
 	inline Quat<T> Mat<T, N>::transToQuat() const
