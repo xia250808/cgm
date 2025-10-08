@@ -14,10 +14,13 @@ class eul_test
 public:
 	eul_test() {
 		eul_print_test();
+
 		eul_mat3_test();
 		eul_quat_test();
+
 		mat_quat_test();
-		quat_eul_test();
+		quat_mat_test();
+
 		mat_eul_test();
 	}
 
@@ -52,11 +55,12 @@ public:
 		cout << result << endl;
 	}
 
-	static void quat_eul_test() {
+	static void quat_mat_test() {
 		Eul<float> eulA = Eul(glm::radians(65.0f), glm::radians(24.0f), glm::radians(42.0f));
+		Mat<float, 3> Mat3A = eulA.transToMat3();
 		Quat<float> quatA = eulA.transToQuat();
-		Eul<float> eulB = Eul<float>::createFromQuat(quatA);
-		std::string result = (eulA == eulB) ? "QuatTransToEul work! " : "QuatTransToEul not work! ";
+		Mat<float, 3> Mat3B = quatA.transToMat3();
+		std::string result = (Mat3A == Mat3B) ? "QuatTransToMat3 work!" : "QuatTransToMat3 not work!";
 		cout << result << endl;
 	}
 
