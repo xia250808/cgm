@@ -6,6 +6,9 @@ namespace cgm::math {
 	template<typename T>
 	class Quat;
 
+	template<typename T, size_t N>
+	class Vec;
+
 	template<typename T,size_t N>
 	class Mat {
 		static_assert(N > 0, "Matrix order must be at least 1");
@@ -19,7 +22,7 @@ namespace cgm::math {
 		Mat adj() const;
 
 	public:
-		using Row = std::array<T, N>;
+		using Row = Vec<T, N>;
 		using Data = std::array<Row, N>;
 		Data data_;
 
@@ -53,15 +56,6 @@ namespace cgm::math {
 		bool operator==(const Mat& other)const;
 
 
-
-		T determinant()const;
-
-		Mat inverse() {
-			return (T(1) / determinant()) * adj();
-		}
-
-		Quat<T> transToQuat()const;
-
 		const Row& row(size_t i)const {
 			if (i >= N) throw std::out_of_range("Matrix indices out of range");
 			return data_[i];
@@ -76,6 +70,15 @@ namespace cgm::math {
 			}
 			return colum;
 		};
+		T determinant()const;
+
+		Mat inverse() {
+			return (T(1) / determinant()) * adj();
+		}
+
+		Quat<T> transToQuat()const;
+
+
 	};
 
 
