@@ -35,6 +35,10 @@ namespace cgm::math {
 		Vec<T, N> normalized() const;
 
 		Vec<T, N> operator+(const Vec<T, N>& other)const;
+
+		Vec<T, N> operator-(const Vec<T, N>& other)const;
+
+		T operator*(const Vec<T, N>& other)const;
 		
 		template<typename Scalar>
 		Vec operator*(Scalar k)const {
@@ -57,9 +61,21 @@ namespace cgm::math {
 	}
 
 	template<typename T, size_t N>
+	T Vec<T, N>::operator*(const Vec<T, N>& other)const {
+
+		T sum = T(0);
+		for (size_t i = 0; i < N; i++)
+		{
+			sum += data_[i] * other[i];
+		}
+
+		return sum;
+
+	}
+
+	template<typename T, size_t N>
 	inline void Vec<T, N>::print() const
 	{
-		std::cout << "Vector: ";
 		for (size_t i = 0; i < N; ++i) {
 			std::cout << data_[i] << "\t";
 		}
@@ -115,6 +131,17 @@ namespace cgm::math {
 		for (size_t i = 0; i < N; ++i)
 		{
 			retVec[i] = data_[i] + other.data_[i];
+		}
+		return retVec;
+	}
+
+	template<typename T, size_t N>
+	inline Vec<T, N> Vec<T, N>::operator-(const Vec<T, N>& other) const
+	{
+		Vec<T, N> retVec;
+		for (size_t i = 0; i < N; ++i)
+		{
+			retVec[i] = data_[i] - other.data_[i];
 		}
 		return retVec;
 	}

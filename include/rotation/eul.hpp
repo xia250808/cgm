@@ -46,27 +46,27 @@ namespace cgm::rotation {
 	template<typename T>
 	Mat<T, 3> Eul<T>::rx(T theta) const {
 		return Mat<T, 3>({ {
-			{1, 0, 0},
-			{0, cos(theta), sin(theta)},
-			{0, -sin(theta), cos(theta)}
+			{{1, 0, 0}},
+			{{0, cos(theta), sin(theta)}},
+			{{0, -sin(theta), cos(theta)}}
 		} });
 	}
 
 	template<typename T>
 	Mat<T, 3> Eul<T>::ry(T theta) const {
 		return Mat<T, 3>({ {
-			{cos(theta), 0, -sin(theta)},
-			{0, 1, 0},
-			{sin(theta), 0, cos(theta)}
+			{{cos(theta), 0, -sin(theta)}},
+			{{0, 1, 0}},
+			{{sin(theta), 0, cos(theta)}}
 		} });
 	}
 
 	template<typename T>
 	Mat<T, 3> Eul<T>::rz(T theta) const {
 		return Mat<T, 3>({ {
-			{cos(theta), sin(theta), 0},
-			{ -sin(theta), cos(theta), 0 },
-			{ 0, 0, 1 }
+			{{cos(theta), sin(theta), 0}},
+			{{ -sin(theta), cos(theta), 0 }},
+			{{ 0, 0, 1 }}
 		} });
 	}
 
