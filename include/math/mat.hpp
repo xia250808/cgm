@@ -46,6 +46,8 @@ namespace cgm::math {
 
 		Mat transpose() const;
 
+		Mat operator+(const Mat& other) const;
+
 		Mat operator*(const Mat& other) const;
 
 		Mat operator*(const T scalar)const;
@@ -61,7 +63,7 @@ namespace cgm::math {
 			return data_[i];
 		};
 
-		Row col(size_t j) {
+		Row colum(size_t j) const {
 			if (j >= N) throw std::out_of_range("Matrix indices out of range");
 			Row colum;
 			for (size_t i = 0; i < N; i++)
@@ -155,10 +157,7 @@ namespace cgm::math {
 	inline void Mat<T, N>::print()
 	{
 		for (size_t i = 0; i < N; ++i) {
-			for (size_t j = 0; j < N; ++j) {
-				std::cout << data_[i][j] << "\t";
-			}
-			std::cout << std::endl;
+			data_[i].print();
 		}
 	}
 
@@ -178,19 +177,29 @@ namespace cgm::math {
 	}
 
 	template<typename T, size_t N>
-	inline Mat<T, N> Mat<T, N>::operator*(const Mat<T, N>& other) const
+	inline Mat<T, N> Mat<T, N>::operator+(const Mat<T, N>& other) const
 	{
 		Mat<T, N> retMat;
 		for (size_t i = 0; i < N; i++)
 		{
-			for (size_t j = 0; j < N; j++)
-			{
-				for (size_t k = 0; k < N; k++)
-				{
-					retMat(i, j) += data_[i][k] * other(k, j);
-				}
+			retMat.data_[i] = data_[i] + other.data_[i];
+		}
+		return retMat;
+	}
 
+	template<typename T, size_t N>
+	inline Mat<T, N> Mat<T, N>::operator*(const Mat<T, N>& other) const
+	{
+		Mat<T, N> retMat;
+
+		for (size_t j = 0; j < N; j++)
+		{
+			Vec<T, N> col = other.colum(j);
+			for (size_t i = 0; i < N; i++)
+			{
+				retMat(i, j) = data_[i] * col;
 			}
+
 		}
 		return retMat;
 	}
@@ -200,34 +209,18 @@ namespace cgm::math {
 		Mat retMat;
 		for (size_t i = 0; i < N; i++)
 		{
-			for (size_t j = 0; j < N; j++) {
-				retMat(i, j) = data_[i][j] * scalar;
-			}
+			retMat.data_[i] = data_[i] * scalar;
 		}
 		return retMat;
 	}
 
 	template<typename T, size_t N>
 	bool Mat<T, N>::operator==(const Mat& other)const {
-		if constexpr (std::is_floating_point_v<T>)
+		for (size_t i = 0; i < N; ++i)
 		{
-			constexpr T epsilon = std::numeric_limits<T>::epsilon() * N;
-			for (size_t i = 0; i < N; ++i)
+			if (data_[i] != data_[i])
 			{
-				for (size_t j = 0; j < N; j++)
-				{
-					if (std::abs(data_[i][j] - other(i, j)) > epsilon) return false;
-				}
-			}
-		}
-		else
-		{
-			for (size_t i = 0; i < N; ++i)
-			{
-				for (size_t j = 0; j < N; j++)
-				{
-					if (data_[i][j] != other(i, j)) return false;
-				}
+				return false;
 			}
 		}
 		return true;
