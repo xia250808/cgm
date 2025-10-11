@@ -17,10 +17,6 @@ namespace cgm::math {
 		Vec() : data_{ T{} } {};
 		Vec(std::array<T, N> arr) :data_(arr) {};
 
-		void print()const;
-
-		bool operator==(const Vec<T, N>& other) const noexcept;
-
 		T& operator[](size_t i) {
 			if (i > N) throw std::out_of_range("Vec index out of range");
 			return data_[i];
@@ -30,14 +26,13 @@ namespace cgm::math {
 			return data_[i];
 		}
 
+		void print()const;
 		T length() const;
-
 		Vec<T, N> normalized() const;
 
+		bool operator==(const Vec<T, N>& other) const noexcept;
 		Vec<T, N> operator+(const Vec<T, N>& other)const;
-
 		Vec<T, N> operator-(const Vec<T, N>& other)const;
-
 		T operator*(const Vec<T, N>& other)const;
 		
 		template<typename Scalar>
@@ -45,7 +40,7 @@ namespace cgm::math {
 			return k * *this;
 		}
 
-		Vec operator*(const cgm::math::Mat<T, N> mat)const;
+		Vec operator*(const Mat<T, N> mat)const;
 
 	};
 
