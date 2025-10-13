@@ -12,6 +12,7 @@ int main()
 	//quat_test quatTest;
 	//eul_test eulTest;
 	//transform_test trans_test;
+	calculate_test calcu;
 
 	cout << "TEST END" << endl;
 	return 0;

@@ -28,6 +28,7 @@ namespace cgm::math {
 
 		void print()const;
 		T length() const;
+		T lengthSquare() const;
 		Vec<T, N> normalized() const;
 
 		bool operator==(const Vec<T, N>& other) const noexcept;
@@ -104,12 +105,18 @@ namespace cgm::math {
 	template<typename T, size_t N>
 	inline T Vec<T, N>::length() const
 	{
+		return sqrt(lengthSquare());
+	}
+
+	template<typename T, size_t N>
+	inline T Vec<T, N>::lengthSquare() const
+	{
 		T sum = 0;
 		for (size_t i = 0; i < N; i++)
 		{
-			sum += data_[i] * data_[i];
+			sum += data_[i]*data_[i];
 		}
-		return sqrt(sum);
+		return sum;
 	}
 
 	template<typename T, size_t N>
