@@ -6,11 +6,12 @@ namespace cgm::geometry {
 	class LineSegment
 	{
 	public:
-		Point3<T> pOrg_;
-		Point3<T> pEnd_;
-		LineSegment(const Point3<T>& org, const Point3<T>& end) :pOrg_(org), pEnd_(end) {};
+		Point3<T> org_;
+		Point3<T> end_;
+		LineSegment(const Point3<T>& org, const Point3<T>& end) :org_(org), end_(end) {};
 		void print();
 		T length();
+		Vec<T, 3> direction()const;
 
 	private:
 
@@ -18,13 +19,18 @@ namespace cgm::geometry {
 	template<typename T>
 	inline void LineSegment<T>::print()
 	{
-		pOrg_.print();
-		pEnd_.print();
+		org_.print();
+		end_.print();
 	}
 
 	template<typename T>
 	inline T LineSegment<T>::length()
 	{
-		return (pEnd_ - pOrg_).length();
+		return (end_ - org_).length();
+	}
+
+	template<typename T>
+	inline Vec<T, 3> LineSegment<T>::direction() const{
+		return end_ - org_;
 	}
 }

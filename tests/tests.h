@@ -10,4 +10,5 @@
 #include "math_test/eul_test.h"
 #include "trans_test/transform_test.h"
 #include "geometry_test/calculate_test.h"
+#include "geometry_test/aabb_test.h"
 
