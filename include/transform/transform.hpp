@@ -8,7 +8,7 @@ namespace cgm::trans {
 		static void print() {
 			std::cout << "TransformFactory"<< std::endl;
 		}
-		static Mat<T, 3> createRotationMat3(const cm::Vec<T, 3>& axis, float angleRadians);
+		static Mat<T, 3> createRotationMat3(const CM::Vec<T, 3>& axis, float angleRadians);
 
 		static Mat<T, 3> createScalarMat3(const Vec<T, 3>& axis, float scaleFactor);
 

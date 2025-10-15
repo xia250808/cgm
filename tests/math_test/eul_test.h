@@ -7,7 +7,6 @@
 #include "rotation/eul.hpp"
 
 using namespace cgm::rotation;
-//using namespace cgm::math;
 
 class eul_test
 {

@@ -34,16 +34,27 @@ namespace cgm::math {
 			if (row >= N || colum >= N) throw std::out_of_range("Matrix indices out of range");
 			return data_[row][colum];
 		}
-
 		const T& operator()(size_t row, size_t colum)const {
 			if (row >= N || colum >= N) throw std::out_of_range("Matrix indices out of range");
 			return data_[row][colum];
 		}
+		const Row& row(size_t i)const {
+			if (i >= N) throw std::out_of_range("Matrix indices out of range");
+			return data_[i];
+		};
+		Row colum(size_t j) const {
+			if (j >= N) throw std::out_of_range("Matrix indices out of range");
+			Row colum;
+			for (size_t i = 0; i < N; i++)
+			{
+				colum[i] = data_[i][j];
+			}
+			return colum;
+		};
 
-		static Mat<T, N> identity();
 
 		void print();
-
+		static Mat<T, N> identity();
 		Mat transpose() const;
 
 		Mat operator+(const Mat& other) const;
@@ -58,26 +69,10 @@ namespace cgm::math {
 		bool operator==(const Mat& other)const;
 
 
-		const Row& row(size_t i)const {
-			if (i >= N) throw std::out_of_range("Matrix indices out of range");
-			return data_[i];
-		};
-
-		Row colum(size_t j) const {
-			if (j >= N) throw std::out_of_range("Matrix indices out of range");
-			Row colum;
-			for (size_t i = 0; i < N; i++)
-			{
-				colum[i] = data_[i][j];
-			}
-			return colum;
-		};
 		T determinant()const;
-
 		Mat inverse() {
 			return (T(1) / determinant()) * adj();
 		}
-
 		Quat<T> transToQuat()const;
 
 
