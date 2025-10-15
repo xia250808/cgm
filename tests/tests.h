@@ -11,4 +11,5 @@
 #include "trans_test/transform_test.h"
 #include "geometry_test/calculate_test.h"
 #include "geometry_test/aabb_test.h"
+#include "geometry_test/plane_test.h"
 

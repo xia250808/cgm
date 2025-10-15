@@ -45,6 +45,8 @@ namespace cgm::math {
 
 	};
 
+	template<typename T> using Vec3 = Vec<T, 3>;
+
 	template<typename Scalar,typename T,size_t N>
 	Vec<T, N> operator*(Scalar k, const Vec<T, N>& vec) {
 		Vec<T,N> retVec = vec;

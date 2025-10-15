@@ -2,6 +2,6 @@
 #include "math/mat.hpp"
 #include "math/vec.hpp"
 #include "math/quat.hpp"
-#include "math/utill.hpp"
+#include "math/utils.hpp"
 
-namespace cm = cgm::math;
+namespace CM = cgm::math;

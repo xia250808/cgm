@@ -15,6 +15,7 @@ int main()
 
 	//calculate_test calcu;
 	aabb_test aabb;
+	plane_test plane;
 
 	cout << "TEST END" << endl;
 	return 0;
