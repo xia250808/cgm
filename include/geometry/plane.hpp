@@ -8,7 +8,7 @@ namespace cgm::geometry {
 	{
 	public:
 		Vec<T, 3> normal_;
-		T d_;
+		T distance_;
 		Plane();
 		Plane(const Point3<T> p1, const Point3<T> p2, const Point3<T> p3);
 		void print();
@@ -23,7 +23,7 @@ namespace cgm::geometry {
 	{
 		Vec<T, 3> e3 ;
 		normal_ = e3;
-		d_ = 0;
+		distance_ = 0;
 	}
 
 	template<typename T>
@@ -32,7 +32,7 @@ namespace cgm::geometry {
 		CM::Vec<T, 3> e3 = p2 - p1;
 		CM::Vec<T, 3> e1 = p3 - p2;
 		normal_ = CM::utils::cross<float>(e3, e1).normalized();
-		d_ = p1 * normal_;
+		distance_ = p1 * normal_;
 	}
 
 	template<typename T>
@@ -40,7 +40,7 @@ namespace cgm::geometry {
 	{
 		std::cout << "normal:" << std::endl;
 		normal_.print();
-		std::cout << "d=" << d_ << std::endl;
+		std::cout << "distance" << distance_ << std::endl;
 	}
 
 	template<typename T>
