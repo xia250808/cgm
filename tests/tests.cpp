@@ -15,8 +15,8 @@ int main()
 
 	//calculate_test calcu;
 	//aabb_test aabb;
-	plane_test plane;
-	//triangle_test triangle;
+	//plane_test plane;
+	triangle_test triangle;
 
 	cout << "TEST END" << endl;
 	return 0;

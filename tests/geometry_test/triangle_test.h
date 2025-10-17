@@ -33,7 +33,17 @@ public:
 		Point3<float> pointC = { { 0,5,0 } };
 		Triangle<float> triangleA = Triangle<float>({ {pointA, pointB, pointC} });
 		std::cout << triangleA.isValid();
-		std::cout << triangleA.area();
+		std::cout<<triangleA.area();
+	}
+
+	void barycentric() {
+		Point3<float> pointA = { { 1,0,0 } };
+		Point3<float> pointB = { { 0,2,0 } };
+		Point3<float> pointC = { { 0,0,1 } };
+		Point3<float> pointD = { { 0,5,0 } };
+		Triangle<float> triangleA = Triangle<float>({ {pointA, pointB, pointC} });
+		Vec3<float> barycentric_coordinates = calculate::barycentricCoordinates(triangleA, pointD);
+		barycentric_coordinates.print();
 	}
 
 private:
@@ -43,6 +53,7 @@ private:
 triangle_test::triangle_test()
 {
 	//print_test();
-	isValid_test();
+	//isValid_test();
 	//area_test();
+	barycentric();
 }

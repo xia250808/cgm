@@ -8,4 +8,9 @@ namespace cgm::geometry::calculate {
 		return plane.normal_ * point - plane.distance_;
 	}
 
+	template<typename T>
+	Vec3<T> barycentricCoordinates(const Triangle<T>& inTriangle,const Point3<T>& point) {
+		return inTriangle.barycentric(point);
+	}
+
 }
