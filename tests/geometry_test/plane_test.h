@@ -21,6 +21,23 @@ public:
 		planeA.print();
 	}
 
+	static void calculate_distance_test() {
+		std::array<float, 3> arr1A = { 0,0,2 };
+		Point3<float> pointA = Point3<float>(arr1A);
+		std::array<float, 3> arr1B = { -1,0,2 };
+		Point3<float> pointB = Point3<float>(arr1B);
+		std::array<float, 3> arr1C = { 0,-1,2 };
+		Point3<float> pointC = Point3<float>(arr1C);
+		Plane<float> planeA = Plane<float>(pointA, pointB, pointC);
+		Point3<float> pointD = { {4.2f,3.0f,7} };
+		float d1 = calculate::distance(planeA, pointD);
+		std::cout << planeA.distance_ <<std::endl;
+		planeA.normal_.print();
+		std::cout << d1 << std::endl;
+
+
+	}
+
 	plane_test();
 	~plane_test();
 
@@ -31,7 +48,8 @@ private:
 plane_test::plane_test()
 {
 	//print_test();
-	create_plane_test();
+	calculate_distance_test();
+	//create_plane_test();
 }
 
 plane_test::~plane_test()

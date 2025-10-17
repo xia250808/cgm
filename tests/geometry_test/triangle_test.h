@@ -33,6 +33,7 @@ public:
 		Point3<float> pointC = { { 0,5,0 } };
 		Triangle<float> triangleA = Triangle<float>({ {pointA, pointB, pointC} });
 		std::cout << triangleA.isValid();
+		std::cout << triangleA.area();
 	}
 
 private:

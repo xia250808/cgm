@@ -14,9 +14,9 @@ int main()
 	//transform_test trans_test;
 
 	//calculate_test calcu;
-	/*aabb_test aabb;
-	plane_test plane;*/
-	triangle_test triangle;
+	//aabb_test aabb;
+	plane_test plane;
+	//triangle_test triangle;
 
 	cout << "TEST END" << endl;
 	return 0;
